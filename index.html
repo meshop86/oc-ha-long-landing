@@ -1218,14 +1218,22 @@ body::after {
     padding-bottom: calc(28px + env(safe-area-inset-bottom));
     min-height: 100vh;
     min-height: 100svh;
-    align-items: start;
+    /* default align-items:stretch lets hero-center fill the 1fr row
+       so justify-content:center inside it actually centers the plate */
   }
   .hero-right { display: none; }
   .hero-center { grid-column: 1; }
   .hero-bottom { gap: 12px; padding-top: 20px; }
 
-  /* ── Dish display — keep everything centered & inside the column ── */
-  .hero-center { width: 100%; text-align: center; }
+  /* ── Dish display — explicitly re-declare centering so it's not lost ── */
+  .hero-center {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
   .dish-badge {
     margin-bottom: 10px;
     max-width: 100%;
@@ -1281,7 +1289,7 @@ body::after {
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     padding-bottom: 2px;
-    justify-content: flex-start;
+    justify-content: center;
     flex-shrink: 0;
   }
   .cat-menu::-webkit-scrollbar { display: none; }

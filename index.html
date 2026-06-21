@@ -1224,19 +1224,38 @@ body::after {
   .hero-center { grid-column: 1; }
   .hero-bottom { gap: 12px; padding-top: 20px; }
 
-  /* ── Dish display ── */
-  .dish-badge { margin-bottom: 10px; }
+  /* ── Dish display — keep everything centered & inside the column ── */
+  .hero-center { width: 100%; text-align: center; }
+  .dish-badge {
+    margin-bottom: 10px;
+    max-width: 100%;
+    text-align: center;
+    white-space: normal;
+  }
   .dish-name {
-    font-size: clamp(26px, 8vw, 42px);
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(24px, 7vw, 40px);
+    line-height: 1.06;
     margin-bottom: 20px;
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
   .main-plate {
     width: clamp(180px, 56vw, 250px);
     height: clamp(180px, 56vw, 250px);
   }
 
-  /* ── Mobile info strip — shows price & rating hidden on desktop info card ── */
-  .mobile-dish-info { display: flex; }
+  /* ── Mobile info strip — wraps so the price never gets clipped ── */
+  .mobile-dish-info {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 100%;
+    gap: 8px 14px;
+    padding: 0 8px;
+  }
+  .m-price, .m-rating { white-space: nowrap; }
+  .mobile-dish-info .m-divider { display: none; }
 
   /* ── Action buttons — stack vertically, full-width ── */
   .hero-actions {

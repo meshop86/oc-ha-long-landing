@@ -80,14 +80,48 @@ body::after {
 }
 
 .logo {
-  font-family: var(--f-disp);
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: -0.04em;
-  color: var(--c-deep);
+  display: flex;
+  align-items: center;
+  gap: 11px;
   position: relative;
+  cursor: pointer;
 }
-.logo em { color: var(--c-accent); font-style: normal; }
+.logo-mark {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: var(--c-white);
+  background: var(--c-accent);
+  box-shadow: 0 8px 20px -6px rgba(232,80,26,.5), inset 0 0 0 1px rgba(255,255,255,.18);
+  flex-shrink: 0;
+  transition: transform .45s var(--ease);
+}
+.logo:hover .logo-mark { transform: rotate(-14deg) scale(1.06); }
+.logo-mark svg { width: 21px; height: 21px; }
+.logo-words {
+  display: flex;
+  flex-direction: column;
+  line-height: .96;
+}
+.logo-top {
+  font-family: var(--f-dish);
+  font-weight: 900;
+  font-size: 23px;
+  letter-spacing: -.01em;
+  color: var(--c-deep);
+}
+.logo-bot {
+  font-family: var(--f-disp);
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-top: 3px;
+  margin-left: 2px;
+}
 
 .nav-links {
   display: flex;
@@ -934,6 +968,11 @@ body::after {
   flex-shrink: 0;
 }
 .drawer-foot .btn-order { flex: 1; padding: 12px; }
+.drawer-foot-col { flex-direction: column; gap: 10px; }
+.drawer-foot-col .foot-row { display: flex; gap: 10px; }
+.drawer-foot-col .foot-row .btn-ghost { flex: 1; }
+.foot-hint { font-size: 11px; line-height: 1.5; color: rgba(16,40,40,.6); margin: 0; }
+.foot-hint code { font-family: ui-monospace, monospace; background: rgba(16,40,40,.07); padding: 1px 5px; border-radius: 4px; }
 
 .set-group { display: flex; flex-direction: column; gap: 12px; }
 .set-group > h3 {
@@ -1051,7 +1090,17 @@ body::after {
 
 <!-- Navigation -->
 <nav class="nav">
-  <div class="logo"><span id="brandName">Ốc</span> <em id="brandAccent">Hạ Long</em></div>
+  <div class="logo" title="Ốc Hạ Long">
+    <span class="logo-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 12a8 8 0 1 1-8-8 6 6 0 0 1 6 6 4 4 0 0 1-4 4 2 2 0 0 1-2-2"/>
+      </svg>
+    </span>
+    <span class="logo-words">
+      <span class="logo-top" id="brandName">Ốc</span>
+      <span class="logo-bot" id="brandAccent">Hạ Long</span>
+    </span>
+  </div>
   <div class="nav-links">
     <a href="#" data-scroll="menu">Thực đơn</a>
     <a href="#" data-modal="m-about">Về chúng tôi</a>
@@ -1244,9 +1293,17 @@ body::after {
     <button class="modal-x" id="closeSettings" aria-label="Đóng">×</button>
   </header>
   <div class="drawer-body" id="settingsBody"></div>
-  <footer class="drawer-foot">
-    <button class="btn-ghost" id="resetSettings">Khôi phục mặc định</button>
-    <button class="btn-order" id="saveSettings">Lưu thay đổi</button>
+  <footer class="drawer-foot drawer-foot-col">
+    <p class="foot-hint">Để chỉnh sửa hiện lên trên web đã chia sẻ: bấm <b>Xuất file</b> rồi tải <code>oc-config.json</code> đó lên repo.</p>
+    <div class="foot-row">
+      <button class="btn-ghost" id="exportConfig">Xuất file</button>
+      <input type="file" id="importConfigFile" accept="application/json" hidden>
+      <button class="btn-ghost" id="importConfig">Nhập file</button>
+    </div>
+    <div class="foot-row">
+      <button class="btn-ghost" id="resetSettings">Khôi phục mặc định</button>
+      <button class="btn-order" id="saveSettings">Lưu thay đổi</button>
+    </div>
   </footer>
 </aside>
 
@@ -1448,9 +1505,9 @@ function loadConfig() {
 }
 
 const saved = loadConfig();
-const DISHES = saved ? saved.dishes : structuredClone(DEFAULT_DISHES);
-const REVIEWS = saved && saved.reviews ? saved.reviews : structuredClone(DEFAULT_REVIEWS);
-const SITE = saved && saved.site
+let DISHES = saved ? saved.dishes : structuredClone(DEFAULT_DISHES);
+let REVIEWS = saved && saved.reviews ? saved.reviews : structuredClone(DEFAULT_REVIEWS);
+let SITE = saved && saved.site
   ? Object.assign(structuredClone(DEFAULT_SITE), saved.site)
   : structuredClone(DEFAULT_SITE);
 let activeCat = 'oc';
@@ -1864,6 +1921,39 @@ $id('resetSettings').addEventListener('click', () => {
   }
 });
 
+// Xuất cấu hình hiện tại ra file oc-config.json để đẩy lên repo
+$id('exportConfig').addEventListener('click', () => {
+  const data = JSON.stringify({ site: SITE, dishes: DISHES, reviews: REVIEWS }, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'oc-config.json';
+  a.click();
+  URL.revokeObjectURL(a.href);
+  toast('Đã xuất oc-config.json — hãy tải file này lên repo.');
+});
+
+// Nhập cấu hình từ file oc-config.json
+$id('importConfig').addEventListener('click', () => $id('importConfigFile').click());
+$id('importConfigFile').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      const cfg = JSON.parse(reader.result);
+      if (cfg.dishes)  DISHES  = cfg.dishes;
+      if (cfg.reviews) REVIEWS = cfg.reviews;
+      if (cfg.site)    SITE    = Object.assign(structuredClone(DEFAULT_SITE), cfg.site);
+      localStorage.setItem(STORE_KEY, JSON.stringify({ site: SITE, dishes: DISHES, reviews: REVIEWS }));
+      renderAll();
+      buildSettings();
+      toast('Đã nhập cấu hình.');
+    } catch (err) { toast('File cấu hình không hợp lệ.'); }
+  };
+  reader.readAsText(file);
+});
+
 /* ════════ Hiệu ứng 3D — nghiêng theo con trỏ ════════ */
 function add3DTilt(el, max, scale) {
   el.addEventListener('mousemove', e => {
@@ -1880,10 +1970,28 @@ add3DTilt($id('mainPlate'), 14, 1.05);
 add3DTilt(document.querySelector('.info-card'), 6, 1);
 
 /* ════════ Khởi tạo ════════ */
-applyConfig();
-buildCarousel();
-buildReviews();
-paintDish();
+function renderAll() {
+  applyConfig();
+  buildCarousel();
+  buildReviews();
+  paintDish();
+}
+// Nếu chưa có chỉnh sửa cục bộ (localStorage), tải cấu hình đã xuất bản từ oc-config.json
+async function boot() {
+  if (!saved) {
+    try {
+      const res = await fetch('oc-config.json', { cache: 'no-store' });
+      if (res.ok) {
+        const cfg = await res.json();
+        if (cfg.dishes)  DISHES  = cfg.dishes;
+        if (cfg.reviews) REVIEWS = cfg.reviews;
+        if (cfg.site)    SITE    = Object.assign(structuredClone(DEFAULT_SITE), cfg.site);
+      }
+    } catch (e) { /* không có file cấu hình — dùng mặc định */ }
+  }
+  renderAll();
+}
+boot();
 </script>
 </body>
 </html>

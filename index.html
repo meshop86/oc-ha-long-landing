@@ -2,9 +2,12 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Ốc Hạ Long — Đặc Sản Biển Cả</title>
 <meta name="description" content="Thưởng thức ốc sơn béo, ốc hương nướng và các món ốc tươi ngon nhất Hạ Long.">
+<meta name="theme-color" content="#F4E8CC">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1066,6 +1069,128 @@ body::after {
 }
 .toast.show { transform: translate(-50%, 0); opacity: 1; }
 
+/* ── Mobile nav ── */
+.nav-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  position: relative;
+  z-index: 210;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-burger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--c-deep);
+  border-radius: 2px;
+  transition: transform .3s var(--ease-out), opacity .25s, transform-origin .3s;
+  transform-origin: center;
+}
+.nav-burger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.nav-burger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.mobile-nav {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 205;
+  background: var(--c-bg);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 24px;
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .32s var(--ease-out), visibility .32s;
+  overflow: hidden;
+}
+.mobile-nav::before {
+  content: '';
+  position: absolute;
+  width: 320px; height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,80,26,.1) 0%, transparent 70%);
+  pointer-events: none;
+}
+.mobile-nav.open { opacity: 1; visibility: visible; }
+.mobile-nav-x {
+  position: absolute;
+  top: 16px; right: 20px;
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--c-deep05);
+  color: var(--c-deep);
+  font-size: 22px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background .2s, color .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-nav-x:active { background: var(--c-accent); color: var(--c-white); }
+.mobile-nav a {
+  font-family: var(--f-disp);
+  font-size: 30px;
+  font-weight: 800;
+  color: var(--c-deep);
+  text-decoration: none;
+  letter-spacing: -.02em;
+  padding: 10px 28px;
+  border-radius: 14px;
+  transition: color .2s, background .2s;
+  -webkit-tap-highlight-color: transparent;
+}
+.mobile-nav a:active { color: var(--c-accent); background: var(--c-accent08); }
+.mobile-nav .mn-cta {
+  background: var(--c-accent);
+  color: var(--c-white);
+  padding: 18px 48px;
+  border-radius: 100px;
+  font-size: 20px;
+  margin-top: 16px;
+  box-shadow: 0 8px 24px -6px rgba(232,80,26,.45);
+}
+.mobile-nav .mn-cta:active { background: var(--c-deep); }
+
+/* ── Mobile dish info strip ── */
+.mobile-dish-info {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+.m-price {
+  font-family: var(--f-disp);
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--c-deep);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  transition: opacity .2s;
+}
+.m-price small { font-size: 12px; font-weight: 500; color: var(--c-muted); letter-spacing: 0; }
+.m-divider { width: 1px; height: 26px; background: var(--c-deep10); border-radius: 1px; flex-shrink: 0; }
+.m-rating {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  line-height: 1;
+  transition: opacity .2s;
+}
+.m-rating b { font-family: var(--f-disp); font-size: 16px; font-weight: 800; color: var(--c-deep); }
+.m-stars { color: var(--c-accent); font-size: 10px; letter-spacing: 1px; }
+.m-rating span:last-child { font-size: 11px; color: var(--c-muted); }
+
 /* ── Responsive ── */
 @media (max-width: 1100px) {
   .hero {
@@ -1080,10 +1205,128 @@ body::after {
 }
 
 @media (max-width: 760px) {
-  .hero { grid-template-columns: 1fr; padding: 80px 16px 24px; }
+  /* ── Navigation ── */
+  .nav { padding: 14px 20px; }
+  .nav-links { display: none; }
+  .nav-burger { display: flex; }
+  .mobile-nav { display: flex; }
+
+  /* ── Hero layout ── */
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 72px 20px 28px;
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    min-height: 100vh;
+    min-height: 100svh;
+    align-items: start;
+  }
   .hero-right { display: none; }
   .hero-center { grid-column: 1; }
-  .hero-bottom { gap: 8px; }
+  .hero-bottom { gap: 12px; padding-top: 20px; }
+
+  /* ── Dish display ── */
+  .dish-badge { margin-bottom: 10px; }
+  .dish-name {
+    font-size: clamp(26px, 8vw, 42px);
+    margin-bottom: 20px;
+  }
+  .main-plate {
+    width: clamp(180px, 56vw, 250px);
+    height: clamp(180px, 56vw, 250px);
+  }
+
+  /* ── Mobile info strip — shows price & rating hidden on desktop info card ── */
+  .mobile-dish-info { display: flex; }
+
+  /* ── Action buttons — stack vertically, full-width ── */
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 300px;
+  }
+  .btn-order { padding: 15px 24px; font-size: 16px; text-align: center; }
+  .btn-watch { padding: 14px 24px; font-size: 15px; justify-content: center; }
+
+  /* ── Bottom carousel — reorder: categories on top, carousel below ── */
+  .carousel-row { flex-wrap: wrap; gap: 0; row-gap: 12px; }
+  .section-label { display: none; }
+  .car-nav { display: none; }
+  .cat-menu {
+    order: -1;
+    width: 100%;
+    margin-left: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px;
+    justify-content: flex-start;
+    flex-shrink: 0;
+  }
+  .cat-menu::-webkit-scrollbar { display: none; }
+  .carousel-track { width: 100%; padding: 4px 0 10px; }
+  .car-thumb { width: 72px; height: 72px; }
+  .car-name { max-width: 72px; }
+
+  /* ── Touch targets (min 44×44px per WCAG / Apple HIG) ── */
+  .react-btn { width: 44px; height: 44px; font-size: 17px; }
+  .modal-x { width: 40px; height: 40px; font-size: 20px; }
+  .cat { padding: 9px 13px; }
+  .cat.on { padding: 9px 16px; }
+
+  /* ── Prevent iOS auto-zoom on input focus (requires font-size ≥ 16px) ── */
+  .field input, .field textarea,
+  .set-field input, .set-field textarea, .set-field select { font-size: 16px; }
+
+  /* ── Modals — full-width, scrollable for long content ── */
+  .modal-overlay { padding: 12px; }
+  .modal {
+    max-width: 100%;
+    border-radius: 24px;
+    padding: 24px 18px;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom));
+    max-height: 88vh;
+    overflow-y: auto;
+  }
+  .field-row { flex-direction: column; gap: 10px; }
+  .modal-title { font-size: 22px; }
+  .stat-row { gap: 8px; }
+  .stat b { font-size: 20px; }
+  .modal-video { padding: 0; border-radius: 16px; overflow: hidden; max-height: none; }
+
+  /* ── Settings drawer — full-width on mobile ── */
+  .drawer { width: 100%; }
+
+  /* ── FAB — safe-area-aware positioning ── */
+  .fab {
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    left: 20px;
+    width: 48px; height: 48px;
+  }
+
+  /* ── Toast — full-width, safe-area-aware ── */
+  .toast {
+    left: 16px;
+    right: 16px;
+    bottom: calc(20px + env(safe-area-inset-bottom));
+    transform: translateY(80px);
+    width: auto;
+    text-align: center;
+    font-size: 13.5px;
+    padding: 13px 20px;
+  }
+  .toast.show { transform: translateY(0); }
+}
+
+/* ── Very small screens (iPhone SE etc.) ── */
+@media (max-width: 380px) {
+  .dish-name { font-size: 24px; }
+  .main-plate { width: 160px; height: 160px; }
+  .mobile-dish-info { gap: 12px; }
+  .m-price { font-size: 18px; }
+  .mobile-nav a { font-size: 26px; }
 }
 </style>
 </head>
@@ -1109,6 +1352,18 @@ body::after {
     <a href="#" data-modal="m-location">Vị trí</a>
     <a href="#" class="nav-cta" data-modal="m-reserve">Đặt bàn</a>
   </div>
+  <button class="nav-burger" id="navBurger" aria-label="Mở menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Mobile navigation overlay -->
+<nav class="mobile-nav" id="mobileNav" aria-label="Điều hướng mobile">
+  <button class="mobile-nav-x" id="mobileNavClose" aria-label="Đóng menu">×</button>
+  <a href="#" data-scroll="menu">Thực đơn</a>
+  <a href="#" data-modal="m-about">Về chúng tôi</a>
+  <a href="#" data-modal="m-location">Vị trí</a>
+  <a href="#" class="mn-cta" data-modal="m-reserve">Đặt bàn</a>
 </nav>
 
 <!-- Table decor -->
@@ -1148,6 +1403,16 @@ body::after {
         </span>
         Xem video
       </button>
+    </div>
+    <!-- Compact info strip — visible on mobile only (replaces hidden hero-right) -->
+    <div class="mobile-dish-info">
+      <div class="m-price" id="dishPriceMobile">89.000đ <small>/ phần</small></div>
+      <div class="m-divider"></div>
+      <div class="m-rating">
+        <b id="dishRatingMobile">4.9</b>
+        <span class="m-stars">★★★★★</span>
+        <span id="reviewCountMobile">2,800</span>
+      </div>
     </div>
   </div>
 
@@ -1579,6 +1844,7 @@ function switchDish(idx) {
     ratingNum.textContent = d.rating;
     reviewCount.textContent = d.reviews + ' đánh giá';
     dishPrice.innerHTML = d.price + ' <small>/ phần</small>';
+    syncMobileInfo(d);
     renderCardBody();
 
     // Fade in
@@ -1642,7 +1908,7 @@ document.querySelectorAll('.cat').forEach(c => {
 
 // Keyboard nav
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeAllModals(); closeDrawer(); }
+  if (e.key === 'Escape') { closeAllModals(); closeDrawer(); closeMobileNav(); }
   if (e.target.matches('input, textarea')) return;
   if (e.key === 'ArrowLeft') step(-1);
   if (e.key === 'ArrowRight') step(1);
@@ -1699,7 +1965,15 @@ function paintDish() {
   ratingNum.textContent = d.rating;
   reviewCount.textContent = d.reviews + ' đánh giá';
   dishPrice.innerHTML = d.price + ' <small>/ phần</small>';
+  syncMobileInfo(d);
   renderCardBody();
+}
+
+function syncMobileInfo(d) {
+  const mP = $id('dishPriceMobile'), mR = $id('dishRatingMobile'), mRv = $id('reviewCountMobile');
+  if (mP) mP.innerHTML = d.price + ' <small>/ phần</small>';
+  if (mR) mR.textContent = d.rating;
+  if (mRv) mRv.textContent = d.reviews;
 }
 
 /* ════════ Toast ════════ */
@@ -1976,8 +2250,52 @@ function add3DTilt(el, max, scale) {
   });
   el.addEventListener('mouseleave', () => { el.style.transform = ''; });
 }
-add3DTilt($id('mainPlate'), 14, 1.05);
-add3DTilt(document.querySelector('.info-card'), 6, 1);
+// Only apply 3D tilt on devices with a precise pointer (mouse); skip on touch screens
+if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+  add3DTilt($id('mainPlate'), 14, 1.05);
+  add3DTilt(document.querySelector('.info-card'), 6, 1);
+}
+
+/* ════════ Swipe trên main plate để chuyển món (mobile) ════════ */
+let _swipeX = 0, _swipeY = 0;
+const _plate = $id('mainPlate');
+_plate.addEventListener('touchstart', e => {
+  _swipeX = e.changedTouches[0].clientX;
+  _swipeY = e.changedTouches[0].clientY;
+}, { passive: true });
+_plate.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - _swipeX;
+  const dy = e.changedTouches[0].clientY - _swipeY;
+  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 44) step(dx < 0 ? 1 : -1);
+}, { passive: true });
+
+/* ════════ Mobile navigation ════════ */
+function closeMobileNav() {
+  const b = $id('navBurger'), n = $id('mobileNav');
+  if (!n) return;
+  n.classList.remove('open');
+  b.classList.remove('open');
+  b.setAttribute('aria-expanded', 'false');
+  if (!document.querySelector('.modal-overlay.open')) document.body.style.overflow = '';
+}
+function openMobileNav() {
+  const b = $id('navBurger'), n = $id('mobileNav');
+  if (!n) return;
+  n.classList.add('open');
+  b.classList.add('open');
+  b.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+}
+
+$id('navBurger').addEventListener('click', () =>
+  $id('mobileNav').classList.contains('open') ? closeMobileNav() : openMobileNav()
+);
+$id('mobileNavClose').addEventListener('click', closeMobileNav);
+
+// Close mobile nav when any link inside it is tapped (modal/scroll handlers fire after)
+$id('mobileNav').querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  closeMobileNav();
+}));
 
 /* ════════ Khởi tạo ════════ */
 function renderAll() {

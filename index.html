@@ -1032,7 +1032,9 @@ body::after {
   flex-direction: column;
   gap: 10px;
 }
-.dish-edit-head { font-size: 12px; font-weight: 700; color: var(--c-deep); }
+.dish-edit + .dish-edit { margin-top: 10px; }
+.dish-edit-head { font-size: 12px; font-weight: 700; color: var(--c-deep); display: flex; align-items: center; gap: 8px; }
+.dish-cat { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--c-accent); background: rgba(232,80,26,.1); padding: 2px 7px; border-radius: 999px; }
 .img-edit { display: flex; gap: 12px; align-items: center; }
 .img-edit img {
   width: 64px; height: 64px;
@@ -1772,7 +1774,7 @@ $id('reserveForm').addEventListener('submit', e => {
 
 /* ════════ Settings drawer ════════ */
 function buildSettings() {
-  const s = SITE, d = DISHES[current];
+  const s = SITE;
   $id('settingsBody').innerHTML = `
     <div class="set-group"><h3>Thương hiệu</h3>
       <div class="set-field"><label>Tên (phần đậm)</label><input id="set-brandName" value="${s.brandName}"></div>
@@ -1809,21 +1811,22 @@ function buildSettings() {
     <div class="set-group"><h3>Bảo mật</h3>
       <div class="set-field"><label>Mã PIN quản trị</label><input id="set-pin" value="${s.adminPin}"></div>
     </div>
-    <div class="set-group"><h3>Món đang hiển thị</h3>
+    <div class="set-group"><h3>Tất cả các món (${DISHES.length})</h3>
+      ${DISHES.map((dish, i) => `
       <div class="dish-edit">
-        <div class="dish-edit-head">${d.name}</div>
+        <div class="dish-edit-head">${i + 1}. ${dish.name} <span class="dish-cat">${dish.category}</span></div>
         <div class="img-edit">
-          <img id="set-dimg-prev" src="${d.img}" alt="Xem trước ảnh">
+          <img id="set-d${i}-prev" src="${dish.img}" alt="Xem trước ảnh">
           <div class="img-edit-ctrl">
-            <button type="button" class="btn-ghost" id="set-dupload">Tải ảnh lên</button>
-            <input type="file" id="set-dfile" accept="image/*" hidden>
+            <button type="button" class="btn-ghost" data-upload="${i}">Tải ảnh lên</button>
+            <input type="file" id="set-d${i}-file" accept="image/*" hidden>
           </div>
         </div>
-        <div class="set-field"><label>Link ảnh món</label><input id="set-dimg" value="${d.img}"></div>
-        <div class="set-field"><label>Tên món</label><input id="set-dname" value="${d.name}"></div>
-        <div class="set-field"><label>Giá</label><input id="set-dprice" value="${d.price}"></div>
-        <div class="set-field"><label>Mô tả</label><textarea id="set-ddesc" rows="3">${d.desc}</textarea></div>
-      </div>
+        <div class="set-field"><label>Link ảnh món</label><input id="set-d${i}-img" value="${dish.img}"></div>
+        <div class="set-field"><label>Tên món</label><input id="set-d${i}-name" value="${dish.name}"></div>
+        <div class="set-field"><label>Giá</label><input id="set-d${i}-price" value="${dish.price}"></div>
+        <div class="set-field"><label>Mô tả</label><textarea id="set-d${i}-desc" rows="3">${dish.desc}</textarea></div>
+      </div>`).join('')}
     </div>`;
   // Xem trước màu ngay khi kéo
   ['set-cbg', 'set-cdeep', 'set-caccent'].forEach(id => {
@@ -1832,20 +1835,24 @@ function buildSettings() {
     });
   });
 
-  // Ảnh món: xem trước khi đổi link
-  $id('set-dimg').addEventListener('input', () => { $id('set-dimg-prev').src = $id('set-dimg').value; });
-  // Upload ảnh từ máy → data URL
-  $id('set-dupload').addEventListener('click', () => $id('set-dfile').click());
-  $id('set-dfile').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    if (file.size > 2 * 1024 * 1024) { toast('Ảnh quá lớn, hãy chọn ảnh dưới 2MB.'); return; }
-    const reader = new FileReader();
-    reader.onload = () => {
-      $id('set-dimg').value = reader.result;
-      $id('set-dimg-prev').src = reader.result;
-    };
-    reader.readAsDataURL(file);
+  // Mỗi món: xem trước khi đổi link ảnh + tải ảnh lên
+  DISHES.forEach((dish, i) => {
+    $id(`set-d${i}-img`).addEventListener('input', () => {
+      $id(`set-d${i}-prev`).src = $id(`set-d${i}-img`).value;
+    });
+    $id('settingsBody').querySelector(`[data-upload="${i}"]`)
+      .addEventListener('click', () => $id(`set-d${i}-file`).click());
+    $id(`set-d${i}-file`).addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) { toast('Ảnh quá lớn, hãy chọn ảnh dưới 2MB.'); return; }
+      const reader = new FileReader();
+      reader.onload = () => {
+        $id(`set-d${i}-img`).value = reader.result;
+        $id(`set-d${i}-prev`).src = reader.result;
+      };
+      reader.readAsDataURL(file);
+    });
   });
 }
 
@@ -1859,10 +1866,13 @@ function saveSettings() {
   SITE.contact     = { address: val('set-addr'), phone: val('set-phone'), hours: val('set-hours'), map: val('set-map') };
   SITE.videoUrl    = val('set-video');
   SITE.adminPin    = val('set-pin') || '1234';
-  const d = DISHES[current];
-  d.name = val('set-dname'); d.price = val('set-dprice'); d.desc = val('set-ddesc');
-  const img = val('set-dimg');
-  if (img) { d.img = img; d.thumb = img; }
+  DISHES.forEach((dish, i) => {
+    dish.name  = val(`set-d${i}-name`);
+    dish.price = val(`set-d${i}-price`);
+    dish.desc  = val(`set-d${i}-desc`);
+    const img  = val(`set-d${i}-img`);
+    if (img) { dish.img = img; dish.thumb = img; }
+  });
   localStorage.setItem(STORE_KEY, JSON.stringify({ site: SITE, dishes: DISHES, reviews: REVIEWS }));
   applyConfig();
   paintDish();

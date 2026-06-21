@@ -1211,28 +1211,37 @@ body::after {
   .nav-burger { display: flex; }
   .mobile-nav { display: flex; }
 
-  /* ── Hero layout ── */
+  /* ── Hero layout — switch to flexbox so centering is stable
+       regardless of carousel length (grid 1fr changes with hero-bottom
+       height; flex:1 on hero-center is always exactly the remaining space) ── */
   .hero {
-    grid-template-columns: 1fr;
-    padding: 72px 20px 28px;
-    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 72px 20px 0;
+    padding-bottom: calc(0px + env(safe-area-inset-bottom));
     min-height: 100vh;
     min-height: 100svh;
-    /* default align-items:stretch lets hero-center fill the 1fr row
-       so justify-content:center inside it actually centers the plate */
   }
   .hero-right { display: none; }
-  .hero-center { grid-column: 1; }
-  .hero-bottom { gap: 12px; padding-top: 20px; }
+  .hero-bottom {
+    width: 100%;
+    gap: 12px;
+    padding: 20px 0 calc(24px + env(safe-area-inset-bottom));
+    flex-shrink: 0;
+    /* grid-column no longer applies in flex context */
+  }
 
-  /* ── Dish display — explicitly re-declare centering so it's not lost ── */
+  /* ── hero-center fills all remaining height → plate always centered ── */
   .hero-center {
+    flex: 1;
     width: 100%;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    min-height: 0;
   }
   .dish-badge {
     margin-bottom: 10px;
@@ -1252,6 +1261,8 @@ body::after {
   .main-plate {
     width: clamp(180px, 56vw, 250px);
     height: clamp(180px, 56vw, 250px);
+    flex-shrink: 0;
+    aspect-ratio: 1;
   }
 
   /* ── Mobile info strip — wraps so the price never gets clipped ── */

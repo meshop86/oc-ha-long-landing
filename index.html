@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ốc Hạ Long — Đặc Sản Biển Cả</title>
+<meta name="description" content="Thưởng thức ốc sơn béo, ốc hương nướng và các món ốc tươi ngon nhất Hạ Long.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Playfair+Display:wght@700;900&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+/*
+  Direction: Editorial/Vietnamese Coastal — dish-name typography IS the hero
+  60% warm ivory #F4E8CC   |   30% deep teal #102828   |   10% coral #E8501A
+  Fonts: Bricolage Grotesque (display) + Playfair Display (dish names) + Plus Jakarta Sans (body)
+  Layout: Asymmetric 3-col hero — side circles · floating dish · glass info card
+*/
+
+:root {
+  --c-bg:         #F4E8CC;
+  --c-bg2:        #EDD9A0;
+  --c-deep:       #102828;
+  --c-deep70:     rgba(16,40,40,0.7);
+  --c-deep10:     rgba(16,40,40,0.1);
+  --c-deep05:     rgba(16,40,40,0.05);
+  --c-accent:     #E8501A;
+  --c-accent20:   rgba(232,80,26,0.2);
+  --c-accent08:   rgba(232,80,26,0.08);
+  --c-white:      #FEFAF2;
+  --c-text:       #102828;
+  --c-muted:      #4A6060;
+  --f-disp:       'Bricolage Grotesque', sans-serif;
+  --f-dish:       'Playfair Display', serif;
+  --f-body:       'Plus Jakarta Sans', sans-serif;
+  --ease:         cubic-bezier(.22,.68,0,1.2);
+  --ease-out:     cubic-bezier(.16,1,.3,1);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  min-height: 100vh;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font-family: var(--f-body);
+  overflow-x: hidden;
+}
+
+/* ── Topography grain ── */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 999;
+  mix-blend-mode: multiply;
+}
+
+/* ── Nav ── */
+.nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 48px;
+  z-index: 200;
+}
+
+.nav::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(var(--c-bg), transparent);
+  pointer-events: none;
+}
+
+.logo {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: 22px;
+  letter-spacing: -0.04em;
+  color: var(--c-deep);
+  position: relative;
+}
+.logo em { color: var(--c-accent); font-style: normal; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  position: relative;
+}
+
+.nav-links a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--c-muted);
+  text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--c-deep); }
+
+.nav-cta {
+  background: var(--c-deep);
+  color: var(--c-white) !important;
+  padding: 10px 24px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 600 !important;
+  transition: background .2s, transform .15s !important;
+}
+.nav-cta:hover { background: var(--c-accent) !important; transform: translateY(-1px) !important; }
+
+/* ── Hero ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 268px 1fr 300px;
+  grid-template-rows: 1fr auto;
+  gap: 0;
+  padding: 96px 48px 40px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Table/restaurant background decoration */
+.decor-table {
+  position: absolute;
+  bottom: 100px;
+  right: -24px;
+  width: 440px;
+  height: 300px;
+  overflow: hidden;
+  opacity: .18;
+  border-radius: 32px 0 0 32px;
+  transform: skewX(-3deg);
+  z-index: 0;
+}
+.decor-table img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.5) brightness(.9);
+}
+
+/* Radial warm glow */
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232,80,26,.12) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Left: đánh giá Google Maps ── */
+.reviews-panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 14px;
+  z-index: 2;
+  position: relative;
+}
+
+/* Header: tổng rating Google */
+.rev-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+  opacity: 0;
+  animation: riseIn .6s var(--ease-out) .4s forwards;
+}
+.g-logo {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--c-white);
+  border: 1px solid rgba(16,40,40,.08);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+.g-logo svg { width: 17px; height: 17px; }
+.rev-head-meta { line-height: 1.15; }
+.rev-head-top {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-deep);
+}
+.rev-head-top b {
+  color: var(--c-accent);
+  font-weight: 700;
+}
+.rev-head-sub {
+  font-size: 11px;
+  color: var(--c-muted);
+}
+
+/* Viewport: khung cắt cho marquee trượt dọc */
+.rev-viewport {
+  position: relative;
+  overflow: hidden;
+  height: 392px;
+  opacity: 0;
+  animation: riseIn .6s var(--ease-out) .45s forwards;
+  /* mép trên/dưới mờ dần cho cảm giác trượt vô tận */
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+          mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+/* Track: cuộn lên liên tục */
+.rev-track {
+  display: flex;
+  flex-direction: column;
+  animation: revScroll 22s linear infinite;
+  will-change: transform;
+}
+.reviews-panel:hover .rev-track { animation-play-state: paused; }
+
+/* Mỗi review card */
+.rev-card {
+  background: rgba(254,250,242,.72);
+  backdrop-filter: blur(20px) saturate(1.3);
+  -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  border: 1px solid rgba(16,40,40,.07);
+  border-radius: 18px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+  box-shadow: 0 12px 28px -16px rgba(16,40,40,.18);
+  transition: transform .28s var(--ease), box-shadow .28s;
+}
+.rev-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 16px 32px -14px rgba(16,40,40,.26);
+}
+
+.rev-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 8px;
+}
+.rev-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--c-white);
+  flex-shrink: 0;
+}
+.rev-meta { flex: 1; min-width: 0; }
+.rev-name {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--c-deep);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.rev-stars {
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--c-accent);
+  margin-top: 1px;
+}
+.rev-stars .empty { color: rgba(16,40,40,.2); }
+.rev-text {
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: var(--c-muted);
+}
+
+/* ── Center: main dish ── */
+.hero-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+}
+
+.dish-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: riseIn .6s var(--ease-out) .35s forwards;
+}
+
+.dish-name {
+  font-family: var(--f-dish);
+  font-size: clamp(36px, 4.5vw, 64px);
+  font-weight: 900;
+  letter-spacing: -0.025em;
+  line-height: 1.0;
+  text-align: center;
+  color: var(--c-deep);
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: riseIn .6s var(--ease-out) .45s forwards;
+  transition: opacity .25s, transform .25s;
+}
+
+.main-plate {
+  width: clamp(240px, 26vw, 360px);
+  height: clamp(240px, 26vw, 360px);
+  border-radius: 50%;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+  box-shadow:
+    0 0 0 14px var(--c-accent08),
+    0 0 0 28px var(--c-accent08),
+    0 32px 64px -16px rgba(16,40,40,.4);
+  opacity: 0;
+  animation: plateIn .8s var(--ease-out) .15s forwards;
+  transition: transform .4s var(--ease-out);
+  cursor: pointer;
+}
+.main-plate:hover { transform: scale(1.03) translateY(-6px); }
+
+.main-plate img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity .3s, transform .4s var(--ease-out);
+}
+.main-plate:hover img { transform: scale(1.06); }
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  opacity: 0;
+  animation: riseIn .6s var(--ease-out) .6s forwards;
+}
+
+.btn-order {
+  background: var(--c-accent);
+  color: var(--c-white);
+  border: none;
+  padding: 14px 32px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 700;
+  font-family: var(--f-body);
+  cursor: pointer;
+  letter-spacing: -.01em;
+  box-shadow: 0 8px 24px -6px rgba(232,80,26,.5);
+  transition: transform .2s, box-shadow .2s;
+}
+.btn-order:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px -6px rgba(232,80,26,.6);
+}
+.btn-order:active { transform: scale(.98); }
+
+.btn-watch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--c-deep);
+  border: 2px solid var(--c-deep10);
+  padding: 14px 28px;
+  border-radius: 100px;
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--f-body);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+}
+.btn-watch:hover {
+  border-color: rgba(16,40,40,.25);
+  background: var(--c-deep05);
+}
+
+.play-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--c-deep);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.play-icon svg { fill: var(--c-white); margin-left: 2px; }
+
+/* ── Right: info card ── */
+.hero-right {
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  position: relative;
+  z-index: 2;
+}
+
+.info-card {
+  background: rgba(254,250,242,.75);
+  backdrop-filter: blur(32px) saturate(1.5);
+  -webkit-backdrop-filter: blur(32px) saturate(1.5);
+  border: 1px solid rgba(16,40,40,.08);
+  border-radius: 28px;
+  padding: 28px;
+  width: 100%;
+  box-shadow: 0 24px 56px -16px rgba(16,40,40,.14), 0 0 0 1px rgba(254,250,242,.5) inset;
+  opacity: 0;
+  animation: riseIn .6s var(--ease-out) .7s forwards;
+}
+
+.card-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 24px;
+}
+
+.c-tab {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 16px;
+  border-radius: 100px;
+  border: none;
+  cursor: pointer;
+  font-family: var(--f-body);
+  background: transparent;
+  color: var(--c-muted);
+  transition: background .2s, color .2s;
+}
+.c-tab.on {
+  background: var(--c-deep);
+  color: var(--c-white);
+}
+
+.rating-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.rating-num {
+  font-family: var(--f-disp);
+  font-weight: 800;
+  font-size: 32px;
+  line-height: 1;
+  background: var(--c-accent);
+  color: white;
+  padding: 8px 14px;
+  border-radius: 14px;
+  letter-spacing: -.03em;
+  transition: opacity .25s;
+}
+
+.rating-meta { flex: 1; }
+.stars { font-size: 13px; color: var(--c-accent); margin-bottom: 2px; }
+.reviews { font-size: 12px; color: var(--c-muted); }
+
+.dish-price {
+  font-family: var(--f-disp);
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--c-deep);
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 6px;
+  transition: opacity .25s;
+}
+.dish-price small {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--c-muted);
+  letter-spacing: 0;
+}
+
+.dish-desc {
+  font-size: 13.5px;
+  line-height: 1.75;
+  color: var(--c-muted);
+  margin-bottom: 24px;
+  margin-top: 12px;
+  transition: opacity .25s;
+}
+
+.chef-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(16,40,40,.07);
+}
+
+.chef-pic {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 2px solid rgba(16,40,40,.1);
+}
+.chef-pic img { width: 100%; height: 100%; object-fit: cover; }
+
+.chef-meta { flex: 1; }
+.chef-name { font-size: 13px; font-weight: 700; color: var(--c-deep); }
+.chef-sub { font-size: 11px; color: var(--c-muted); margin-top: 1px; }
+
+.react-btns { display: flex; gap: 6px; }
+
+.react-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid rgba(16,40,40,.12);
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  font-size: 15px;
+  transition: background .2s, border-color .2s, transform .15s;
+  line-height: 1;
+}
+.react-btn:hover {
+  background: var(--c-accent20);
+  border-color: var(--c-accent);
+  transform: scale(1.1);
+}
+.react-btn.liked { background: var(--c-accent); border-color: var(--c-accent); }
+
+/* ── Bottom area: category menu + carousel ── */
+.hero-bottom {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: relative;
+  z-index: 2;
+  padding-top: 24px;
+}
+
+/* Category menu bar (món / đồ uống / dịch vụ) — hòa vào nền, ngang hàng carousel */
+.cat-menu {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: transparent;
+  padding: 0;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.cat {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: var(--f-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--c-muted);
+  padding: 9px 12px;
+  border-radius: 100px;
+  transition: background .22s, color .22s, transform .15s;
+  white-space: nowrap;
+}
+.cat:hover { color: var(--c-deep); background: var(--c-deep05); }
+.cat.on { background: var(--c-deep); color: var(--c-white); padding: 9px 16px; }
+.cat.on:hover { background: var(--c-deep); }
+
+.cat svg {
+  width: 18px;
+  height: 18px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  flex-shrink: 0;
+}
+
+/* Nhãn: ẩn ở nút thường, hiện ở nút active */
+.cat-label {
+  max-width: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-width .28s var(--ease-out), opacity .2s, margin .28s;
+}
+.cat.on .cat-label {
+  max-width: 130px;
+  opacity: 1;
+}
+
+/* Carousel row */
+.carousel-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.section-label {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  opacity: .7;
+}
+
+.carousel-track {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 0;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+
+.car-item {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.car-thumb {
+  width: 68px;
+  height: 68px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  transition: border-color .25s, transform .3s var(--ease), box-shadow .25s;
+  box-shadow: 0 4px 14px -4px rgba(16,40,40,.14);
+}
+
+.car-item:hover .car-thumb,
+.car-item.active .car-thumb {
+  border-color: var(--c-accent);
+  transform: translateY(-5px);
+  box-shadow: 0 12px 24px -6px rgba(232,80,26,.25);
+}
+
+.car-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.car-name {
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--c-muted);
+  max-width: 68px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: color .2s;
+}
+.car-item.active .car-name { color: var(--c-accent); }
+
+.car-nav {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.car-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(16,40,40,.14);
+  background: transparent;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  color: var(--c-deep);
+  font-size: 16px;
+  transition: background .2s, border-color .2s, transform .15s;
+}
+.car-btn:hover {
+  background: var(--c-deep);
+  border-color: var(--c-deep);
+  color: var(--c-white);
+  transform: scale(1.06);
+}
+
+
+/* ── Keyframes ── */
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes plateIn {
+  from { opacity: 0; transform: scale(.82); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Marquee dọc: cuộn hết 1 bộ card rồi lặp liền mạch */
+@keyframes revScroll {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rev-track { animation: none; }
+}
+
+/* ── Dish transition states ── */
+.fading-out {
+  opacity: 0 !important;
+  transform: scale(.93) !important;
+}
+.fading-out-up {
+  opacity: 0 !important;
+  transform: translateY(-10px) !important;
+}
+
+/* ════════ 3D depth ════════ */
+.hero { perspective: 1400px; }
+.main-plate { transform-style: preserve-3d; will-change: transform; }
+.info-card, .modal-tilt { transform-style: preserve-3d; will-change: transform; }
+.car-thumb { transform-style: preserve-3d; }
+
+/* ════════ Modals ════════ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(16,40,40,.42);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s var(--ease-out), visibility .3s;
+}
+.modal-overlay.open { opacity: 1; visibility: visible; }
+
+.modal {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  background: var(--c-white);
+  border: 1px solid rgba(16,40,40,.08);
+  border-radius: 28px;
+  padding: 32px;
+  box-shadow: 0 40px 80px -24px rgba(16,40,40,.5);
+  transform: translateY(24px) scale(.96);
+  opacity: 0;
+  transition: transform .4s var(--ease), opacity .3s;
+}
+.modal-overlay.open .modal { transform: translateY(0) scale(1); opacity: 1; }
+
+.modal-x {
+  position: absolute;
+  top: 16px; right: 16px;
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--c-deep05);
+  color: var(--c-deep);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background .2s, transform .2s;
+}
+.modal-x:hover { background: var(--c-accent); color: var(--c-white); transform: rotate(90deg); }
+
+.modal-title {
+  font-family: var(--f-disp);
+  font-size: 26px;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: var(--c-deep);
+  margin-bottom: 6px;
+}
+.modal-sub, .modal-text { font-size: 13.5px; line-height: 1.7; color: var(--c-muted); margin-bottom: 20px; }
+.modal-text { margin-bottom: 24px; }
+
+/* Form */
+.form { display: flex; flex-direction: column; gap: 14px; }
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field span { font-size: 12px; font-weight: 600; color: var(--c-deep); }
+.field input, .field textarea {
+  font-family: var(--f-body);
+  font-size: 14px;
+  color: var(--c-deep);
+  background: var(--c-bg);
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 11px 14px;
+  outline: none;
+  transition: border-color .2s, background .2s;
+  resize: none;
+  width: 100%;
+}
+.field input:focus, .field textarea:focus { border-color: var(--c-accent); background: var(--c-white); }
+.modal-submit { width: 100%; text-align: center; margin-top: 6px; text-decoration: none; display: block; }
+
+/* Video modal */
+.modal-video { max-width: 760px; padding: 0; background: #000; overflow: hidden; }
+.modal-video .modal-x { background: rgba(255,255,255,.15); color: #fff; }
+.video-frame { position: relative; width: 100%; aspect-ratio: 16/9; }
+.video-frame iframe { position: absolute; inset: 0; width: 100%; height: 100%; }
+.video-fallback {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  font-size: 12.5px;
+  color: rgba(255,255,255,.7);
+  text-decoration: none;
+  transition: color .2s;
+}
+.video-fallback:hover { color: #fff; }
+
+/* About stats */
+.stat-row { display: flex; gap: 12px; }
+.stat {
+  flex: 1;
+  background: var(--c-bg);
+  border-radius: 16px;
+  padding: 16px 12px;
+  text-align: center;
+}
+.stat b { display: block; font-family: var(--f-disp); font-size: 24px; font-weight: 800; color: var(--c-accent); letter-spacing: -.02em; }
+.stat span { font-size: 11px; color: var(--c-muted); }
+
+/* Contact list */
+.contact-list { list-style: none; display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px; }
+.contact-list li { display: flex; gap: 14px; align-items: flex-start; }
+.contact-list .ci { font-size: 20px; flex-shrink: 0; }
+.contact-list b { font-size: 13px; color: var(--c-deep); display: block; margin-bottom: 2px; }
+.contact-list p { font-size: 13px; color: var(--c-muted); line-height: 1.5; }
+
+/* ════════ Settings FAB + drawer ════════ */
+.fab {
+  position: fixed;
+  bottom: 28px; left: 28px;
+  z-index: 400;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  border: 1px solid rgba(16,40,40,.1);
+  background: var(--c-white);
+  color: var(--c-deep);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 12px 28px -8px rgba(16,40,40,.3);
+  transition: transform .3s var(--ease), background .25s, color .25s, opacity .3s, visibility .3s;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(.5);
+}
+.fab.revealed { opacity: 1; visibility: visible; pointer-events: auto; transform: scale(1); }
+.fab.revealed:hover { transform: rotate(60deg) scale(1.08); background: var(--c-accent); color: var(--c-white); }
+
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 450;
+  background: rgba(16,40,40,.4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .3s, visibility .3s;
+}
+.drawer-overlay.open { opacity: 1; visibility: visible; }
+
+.drawer {
+  position: fixed;
+  top: 0; right: 0;
+  z-index: 460;
+  width: 380px;
+  max-width: 92vw;
+  height: 100vh;
+  background: var(--c-white);
+  border-left: 1px solid rgba(16,40,40,.08);
+  box-shadow: -24px 0 60px -20px rgba(16,40,40,.35);
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform .42s var(--ease-out);
+}
+.drawer.open { transform: translateX(0); }
+
+.drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 24px;
+  border-bottom: 1px solid rgba(16,40,40,.07);
+  flex-shrink: 0;
+}
+.drawer-head h2 { font-family: var(--f-disp); font-size: 20px; font-weight: 800; color: var(--c-deep); letter-spacing: -.02em; }
+.drawer-head .modal-x { position: static; }
+
+.drawer-body { flex: 1; overflow-y: auto; padding: 20px 24px; display: flex; flex-direction: column; gap: 22px; }
+.drawer-foot {
+  display: flex;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid rgba(16,40,40,.07);
+  flex-shrink: 0;
+}
+.drawer-foot .btn-order { flex: 1; padding: 12px; }
+
+.set-group { display: flex; flex-direction: column; gap: 12px; }
+.set-group > h3 {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--c-accent);
+}
+.set-field { display: flex; flex-direction: column; gap: 5px; }
+.set-field > label { font-size: 12px; font-weight: 600; color: var(--c-deep); }
+.set-field input, .set-field textarea, .set-field select {
+  font-family: var(--f-body);
+  font-size: 13px;
+  color: var(--c-deep);
+  background: var(--c-bg);
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 9px 12px;
+  outline: none;
+  transition: border-color .2s;
+  resize: none;
+  width: 100%;
+}
+.set-field input:focus, .set-field textarea:focus, .set-field select:focus { border-color: var(--c-accent); }
+.set-colors { display: flex; gap: 10px; }
+.set-color { flex: 1; display: flex; flex-direction: column; gap: 4px; align-items: center; }
+.set-color span { font-size: 10px; color: var(--c-muted); }
+.set-color input[type=color] {
+  width: 100%; height: 38px;
+  border: 1px solid rgba(16,40,40,.12);
+  border-radius: 10px;
+  background: none;
+  cursor: pointer;
+  padding: 3px;
+}
+.btn-ghost {
+  flex: 1;
+  background: transparent;
+  border: 1.5px solid rgba(16,40,40,.14);
+  color: var(--c-muted);
+  border-radius: 100px;
+  padding: 12px;
+  font-family: var(--f-body);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color .2s, color .2s;
+}
+.btn-ghost:hover { border-color: var(--c-accent); color: var(--c-accent); }
+
+.dish-edit {
+  background: var(--c-bg);
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.dish-edit-head { font-size: 12px; font-weight: 700; color: var(--c-deep); }
+.img-edit { display: flex; gap: 12px; align-items: center; }
+.img-edit img {
+  width: 64px; height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1px solid rgba(16,40,40,.12);
+  background: var(--c-white);
+}
+.img-edit-ctrl { flex: 1; }
+.img-edit-ctrl .btn-ghost { width: 100%; padding: 9px; }
+
+/* Toast */
+.toast {
+  position: fixed;
+  bottom: 28px; left: 50%;
+  transform: translate(-50%, 80px);
+  z-index: 600;
+  background: var(--c-deep);
+  color: var(--c-white);
+  font-size: 14px;
+  font-weight: 500;
+  padding: 14px 24px;
+  border-radius: 100px;
+  box-shadow: 0 16px 40px -12px rgba(16,40,40,.5);
+  opacity: 0;
+  transition: transform .4s var(--ease), opacity .3s;
+  pointer-events: none;
+}
+.toast.show { transform: translate(-50%, 0); opacity: 1; }
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .hero {
+    grid-template-columns: 1fr 300px;
+    padding: 88px 32px 32px;
+  }
+  .reviews-panel { display: none; }
+  .hero-center { grid-column: 1; }
+  .nav { padding: 20px 24px; }
+  .nav-links a:not(.nav-cta) { display: none; }
+  .decor-table { display: none; }
+}
+
+@media (max-width: 760px) {
+  .hero { grid-template-columns: 1fr; padding: 80px 16px 24px; }
+  .hero-right { display: none; }
+  .hero-center { grid-column: 1; }
+  .hero-bottom { gap: 8px; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navigation -->
+<nav class="nav">
+  <div class="logo"><span id="brandName">Ốc</span> <em id="brandAccent">Hạ Long</em></div>
+  <div class="nav-links">
+    <a href="#" data-scroll="menu">Thực đơn</a>
+    <a href="#" data-modal="m-about">Về chúng tôi</a>
+    <a href="#" data-modal="m-location">Vị trí</a>
+    <a href="#" class="nav-cta" data-modal="m-reserve">Đặt bàn</a>
+  </div>
+</nav>
+
+<!-- Table decor -->
+<div class="decor-table">
+  <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=60" alt="" aria-hidden="true">
+</div>
+
+<!-- Hero -->
+<section class="hero">
+
+  <!-- Left: đánh giá Google Maps (sao cao → thấp) -->
+  <div class="reviews-panel">
+    <div class="rev-head">
+      <div class="g-logo">
+        <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.9h5.9a5 5 0 0 1-2.2 3.3v2.7h3.6c2.1-2 3.2-4.8 3.2-7.9z"/><path fill="#34A853" d="M12 23c2.9 0 5.4-1 7.2-2.6l-3.6-2.7c-1 .7-2.3 1.1-3.6 1.1-2.8 0-5.1-1.9-6-4.4H2.3v2.8A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M6 14.3a6.6 6.6 0 0 1 0-4.2V7.3H2.3a11 11 0 0 0 0 9.9L6 14.3z"/><path fill="#EA4335" d="M12 5.5c1.6 0 3 .5 4.1 1.6l3.1-3.1A11 11 0 0 0 2.3 7.3L6 10.1c.9-2.6 3.2-4.6 6-4.6z"/></svg>
+      </div>
+      <div class="rev-head-meta">
+        <div class="rev-head-top"><b id="gRating">4.9</b> ★ trên Google</div>
+        <div class="rev-head-sub"><span id="gCount">2.847</span> đánh giá</div>
+      </div>
+    </div>
+    <div class="rev-viewport"><div class="rev-track" id="reviewsList"></div></div>
+  </div>
+
+  <!-- Center: main dish -->
+  <div class="hero-center">
+    <div class="dish-badge" id="dishBadge">#1 Món được yêu thích nhất</div>
+    <div class="dish-name" id="dishName">ỐC SƠN BÉO</div>
+    <div class="main-plate" id="mainPlate">
+      <img id="mainImg" src="https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=700&q=85" alt="Ốc Sơn Béo">
+    </div>
+    <div class="hero-actions">
+      <button class="btn-order" data-modal="m-reserve">Đặt món ngay</button>
+      <button class="btn-watch" data-modal="m-video">
+        <span class="play-icon">
+          <svg width="8" height="10" viewBox="0 0 8 10"><polygon points="0,0 8,5 0,10"/></svg>
+        </span>
+        Xem video
+      </button>
+    </div>
+  </div>
+
+  <!-- Right: info card -->
+  <div class="hero-right">
+    <div class="info-card">
+      <div class="card-tabs">
+        <button class="c-tab on" data-tab="overview">Tổng quan</button>
+        <button class="c-tab" data-tab="ingredients">Nguyên liệu</button>
+      </div>
+      <div class="rating-wrap">
+        <div class="rating-num" id="ratingNum">4.9</div>
+        <div class="rating-meta">
+          <div class="stars">★★★★★</div>
+          <div class="reviews" id="reviewCount">2,800 đánh giá</div>
+        </div>
+      </div>
+      <div class="dish-price" id="dishPrice">89.000đ <small>/ phần</small></div>
+      <p class="dish-desc" id="dishDesc">
+        Ốc sơn béo tươi từ vùng biển Hạ Long, sốt bơ tỏi thơm lừng.
+        Thịt ốc giòn ngọt, đậm vị biển cả — đặc sản không thể bỏ lỡ khi đến với Hạ Long.
+      </p>
+      <div class="chef-row">
+        <div class="chef-pic">
+          <img id="chefPic" src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=100&q=80" alt="Bếp trưởng">
+        </div>
+        <div class="chef-meta">
+          <div class="chef-name" id="chefName">Bếp trưởng Minh Hải</div>
+          <div class="chef-sub" id="chefSub">15 năm kinh nghiệm · Chuyên gia ốc biển</div>
+        </div>
+        <div class="react-btns">
+          <button class="react-btn" id="likeBtn" title="Yêu thích">♡</button>
+          <button class="react-btn" title="Không thích">—</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom: carousel + category menu cùng một hàng -->
+  <div class="hero-bottom">
+    <div class="carousel-row">
+      <span class="section-label">Thực đơn</span>
+      <div class="carousel-track" id="carouselTrack"></div>
+      <div class="car-nav">
+        <button class="car-btn" id="prevBtn" aria-label="Trước">←</button>
+        <button class="car-btn" id="nextBtn" aria-label="Tiếp">→</button>
+      </div>
+
+      <!-- Category menu (món ăn · đồ uống · dịch vụ) -->
+      <div class="cat-menu" id="catMenu">
+        <button class="cat on" data-cat="oc" title="Món ốc">
+          <svg viewBox="0 0 24 24"><path d="M3 3v7a3 3 0 0 0 6 0V3M6 3v18M16 3c-1.5 0-3 1.5-3 5s1.5 5 3 5 3-1.5 3-5-1.5-5-3-5zM19 13v8"/></svg>
+          <span class="cat-label">Món ốc</span>
+        </button>
+        <button class="cat" data-cat="drink" title="Đồ uống">
+          <svg viewBox="0 0 24 24"><path d="M5 3h14l-1 9a6 6 0 0 1-12 0zM12 15v6M8 21h8"/></svg>
+          <span class="cat-label">Đồ uống</span>
+        </button>
+        <button class="cat" data-cat="grill" title="Lẩu & Nướng">
+          <svg viewBox="0 0 24 24"><path d="M12 2c1 2-1 3 0 5s2 2 1 4M8 4c.6 1.2-.6 1.8 0 3M16 4c.6 1.2-.6 1.8 0 3M5 12h14a7 7 0 0 1-14 0zM9 19l-1 3M15 19l1 3"/></svg>
+          <span class="cat-label">Lẩu & Nướng</span>
+        </button>
+        <button class="cat" data-cat="service" title="Dịch vụ">
+          <svg viewBox="0 0 24 24"><path d="M3 19h18M12 6a6 6 0 0 0-6 6h12a6 6 0 0 0-6-6zM12 6V4M10 4h4"/></svg>
+          <span class="cat-label">Dịch vụ</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ════════ MODALS ════════ -->
+
+<!-- Đặt bàn / Đặt món -->
+<div class="modal-overlay" id="m-reserve" role="dialog" aria-modal="true" aria-label="Đặt bàn">
+  <div class="modal modal-tilt">
+    <button class="modal-x" data-close aria-label="Đóng">×</button>
+    <h2 class="modal-title">Đặt bàn / Đặt món</h2>
+    <p class="modal-sub">Để lại thông tin, chúng tôi gọi xác nhận trong 15 phút.</p>
+    <form class="form" id="reserveForm">
+      <label class="field"><span>Họ và tên</span><input name="name" required placeholder="Nguyễn Văn A"></label>
+      <label class="field"><span>Số điện thoại</span><input name="phone" required pattern="[0-9 +]{8,}" placeholder="09xx xxx xxx"></label>
+      <div class="field-row">
+        <label class="field"><span>Số khách</span><input name="guests" type="number" min="1" value="2" required></label>
+        <label class="field"><span>Ngày & giờ</span><input name="time" type="datetime-local" required></label>
+      </div>
+      <label class="field"><span>Ghi chú</span><textarea name="note" rows="2" placeholder="Yêu cầu đặc biệt..."></textarea></label>
+      <button type="submit" class="btn-order modal-submit">Xác nhận đặt bàn</button>
+    </form>
+  </div>
+</div>
+
+<!-- Xem video -->
+<div class="modal-overlay" id="m-video" role="dialog" aria-modal="true" aria-label="Video">
+  <div class="modal modal-video">
+    <button class="modal-x" data-close aria-label="Đóng">×</button>
+    <div class="video-frame">
+      <iframe id="videoIframe" src="" title="Giới thiệu quán" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <a class="video-fallback" id="videoFallback" target="_blank" rel="noopener">Không xem được? Mở trên YouTube ↗</a>
+  </div>
+</div>
+
+<!-- Về chúng tôi -->
+<div class="modal-overlay" id="m-about" role="dialog" aria-modal="true" aria-label="Về chúng tôi">
+  <div class="modal modal-tilt">
+    <button class="modal-x" data-close aria-label="Đóng">×</button>
+    <h2 class="modal-title">Về chúng tôi</h2>
+    <p class="modal-text" id="aboutText"></p>
+    <div class="stat-row">
+      <div class="stat"><b>15+</b><span>năm kinh nghiệm</span></div>
+      <div class="stat"><b>50k+</b><span>khách hài lòng</span></div>
+      <div class="stat"><b>4.9★</b><span>trên Google</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Vị trí -->
+<div class="modal-overlay" id="m-location" role="dialog" aria-modal="true" aria-label="Vị trí">
+  <div class="modal modal-tilt">
+    <button class="modal-x" data-close aria-label="Đóng">×</button>
+    <h2 class="modal-title">Vị trí & Liên hệ</h2>
+    <ul class="contact-list">
+      <li><span class="ci">📍</span><div><b>Địa chỉ</b><p id="cAddr"></p></div></li>
+      <li><span class="ci">📞</span><div><b>Hotline</b><p id="cPhone"></p></div></li>
+      <li><span class="ci">🕑</span><div><b>Giờ mở cửa</b><p id="cHours"></p></div></li>
+    </ul>
+    <a class="btn-order modal-submit" id="mapLink" target="_blank" rel="noopener">Mở Google Maps</a>
+  </div>
+</div>
+
+<!-- ════════ SETTINGS DRAWER ════════ -->
+<button class="fab" id="settingsFab" aria-label="Cài đặt trang" title="Cài đặt trang">
+  <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+  </svg>
+</button>
+
+<div class="drawer-overlay" id="settingsOverlay"></div>
+<aside class="drawer" id="settingsDrawer" aria-label="Cài đặt trang">
+  <header class="drawer-head">
+    <h2>Cài đặt trang</h2>
+    <button class="modal-x" id="closeSettings" aria-label="Đóng">×</button>
+  </header>
+  <div class="drawer-body" id="settingsBody"></div>
+  <footer class="drawer-foot">
+    <button class="btn-ghost" id="resetSettings">Khôi phục mặc định</button>
+    <button class="btn-order" id="saveSettings">Lưu thay đổi</button>
+  </footer>
+</aside>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+// Đánh giá Google Maps — sắp xếp sao cao → thấp
+const DEFAULT_REVIEWS = [
+  { name: 'Nguyễn Thu Hà',  stars: 5, color: '#D85A30', text: 'Ốc sơn béo tươi rói, sốt bơ tỏi đậm đà. Quán sạch, view đẹp, sẽ quay lại!' },
+  { name: 'Trần Minh Quân', stars: 5, color: '#1D9E75', text: 'Hải sản tươi ngon nhất Hạ Long. Phục vụ nhanh, giá hợp lý.' },
+  { name: 'Lê Phương Anh',  stars: 5, color: '#534AB7', text: 'Ốc hương nướng tuyệt vời, ăn là nghiền. Không gian ấm cúng.' },
+  { name: 'Phạm Văn Đức',   stars: 4, color: '#185FA5', text: 'Món ngon, đông khách nên chờ hơi lâu chút. Vẫn rất đáng thử.' }
+];
+
+// Thông tin trang (có thể chỉnh trong Cài đặt)
+const DEFAULT_SITE = {
+  brandName: 'Ốc',
+  brandAccent: 'Hạ Long',
+  colors: { bg: '#F4E8CC', deep: '#102828', accent: '#E8501A' },
+  google: { rating: '4.9', count: '2.847' },
+  chef: {
+    name: 'Bếp trưởng Minh Hải',
+    sub: '15 năm kinh nghiệm · Chuyên gia ốc biển',
+    pic: 'https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=100&q=80'
+  },
+  about: 'Ốc Hạ Long khởi nguồn từ tình yêu với hải sản vùng vịnh. Suốt 15 năm, chúng tôi chọn ốc tươi sống mỗi sáng, chế biến theo công thức gia truyền để giữ trọn vị ngọt của biển. Đến với chúng tôi để thưởng thức đặc sản và ngắm hoàng hôn trên vịnh Hạ Long.',
+  contact: {
+    address: '88 Hạ Long, P. Bãi Cháy, TP. Hạ Long, Quảng Ninh',
+    phone: '0203 6868 888',
+    hours: 'Hằng ngày · 10:00 – 23:00',
+    map: 'https://www.google.com/maps/search/?api=1&query=oc+ha+long+bai+chay'
+  },
+  videoUrl: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+  adminPin: '1234'
+};
+
+function renderStars(n) {
+  let s = '';
+  for (let i = 1; i <= 5; i++) s += i <= n ? '★' : '<span class="empty">★</span>';
+  return s;
+}
+
+function initials(name) {
+  const p = name.trim().split(' ');
+  return (p[0][0] + (p[p.length - 1][0] || '')).toUpperCase();
+}
+
+function buildReviews() {
+  const list = document.getElementById('reviewsList');
+  // Sắp xếp giảm dần theo số sao
+  const sorted = [...REVIEWS].sort((a, b) => b.stars - a.stars);
+  const card = r => `
+    <div class="rev-card">
+      <div class="rev-top">
+        <div class="rev-avatar" style="background:${r.color}">${initials(r.name)}</div>
+        <div class="rev-meta">
+          <div class="rev-name">${r.name}</div>
+          <div class="rev-stars">${renderStars(r.stars)}</div>
+        </div>
+      </div>
+      <div class="rev-text">${r.text}</div>
+    </div>`;
+  // Nhân đôi danh sách để marquee cuộn lặp liền mạch (translateY -50%)
+  const set = sorted.map(card).join('');
+  list.innerHTML = set + set;
+}
+
+const DEFAULT_DISHES = [
+  {
+    name: 'ỐC SƠN BÉO', category: 'oc',
+    badge: '#1 Món được yêu thích nhất',
+    img: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=200&q=80',
+    rating: '4.9', reviews: '2,800',
+    price: '89.000đ',
+    desc: 'Ốc sơn béo tươi từ vùng biển Hạ Long, sốt bơ tỏi thơm lừng. Thịt ốc giòn ngọt, đậm vị biển cả — đặc sản không thể bỏ lỡ khi đến với Hạ Long.',
+    ingredients: 'Ốc sơn béo tươi · Bơ lạt · Tỏi phi · Sả · Ớt sừng · Hành lá · Tiêu xanh'
+  },
+  {
+    name: 'ỐC HƯƠNG NƯỚNG', category: 'oc',
+    badge: 'Đặc sản Hạ Long số 1',
+    img: 'https://images.unsplash.com/photo-1633504581786-316c8002b1b9?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1633504581786-316c8002b1b9?w=200&q=80',
+    rating: '4.8', reviews: '1,950',
+    price: '120.000đ',
+    desc: 'Ốc hương nướng mỡ hành, hương thơm quyến rũ, thịt dai ngọt tự nhiên. Chấm cùng muối tiêu chanh — vị ngon mà bạn sẽ không thể quên.',
+    ingredients: 'Ốc hương sống · Mỡ hành · Đậu phộng rang · Muối tiêu chanh'
+  },
+  {
+    name: 'ỐC MÓNG TAY HẤP', category: 'oc',
+    badge: 'Tươi sống thu hoạch mỗi sáng',
+    img: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=200&q=80',
+    rating: '4.8', reviews: '2,100',
+    price: '95.000đ',
+    desc: 'Ốc móng tay hấp sả gừng, giữ trọn vị ngọt tươi của biển. Thịt ốc mềm mà giòn, chấm nước mắm gừng chua cay — ăn một lần là nhớ mãi.',
+    ingredients: 'Ốc móng tay · Sả cây · Gừng · Nước mắm gừng · Rau răm'
+  },
+  {
+    name: 'ỐC LEN XÀO DỪA', category: 'oc',
+    badge: 'Phong cách độc đáo',
+    img: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=200&q=80',
+    rating: '4.7', reviews: '1,420',
+    price: '75.000đ',
+    desc: 'Ốc len xào nước cốt dừa béo ngậy, pha chút sả ớt cay nồng. Hương dừa hòa quyện với vị biển — món ăn độc đáo mang phong vị đặc sắc khó tìm.',
+    ingredients: 'Ốc len · Nước cốt dừa · Sả · Ớt · Rau quế'
+  },
+  {
+    name: 'ỐC BƯƠU HẤP GỪNG', category: 'oc',
+    badge: 'Bổ dưỡng · Đậm đà truyền thống',
+    img: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=200&q=80',
+    rating: '4.6', reviews: '3,200',
+    price: '65.000đ',
+    desc: 'Ốc bươu hấp gừng sả truyền thống, thịt chắc và ngọt tự nhiên, có vị gừng ấm áp. Nhâm nhi cùng ly bia lạnh — thư giãn không gì bằng.',
+    ingredients: 'Ốc bươu · Gừng tươi · Sả · Lá chanh · Nước mắm ớt'
+  },
+  {
+    name: 'ỐC MỠ XÀO TỎI', category: 'oc',
+    badge: 'Bestseller liên tục 10 năm',
+    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&q=80',
+    rating: '4.9', reviews: '4,500',
+    price: '70.000đ',
+    desc: 'Ốc mỡ xào tỏi phi thơm vàng, béo ngậy và đậm đà. Món ăn dân dã mà ngon lành — bán chạy nhất quán suốt hơn 10 năm, được khách quen đặt mỗi ngày.',
+    ingredients: 'Ốc mỡ · Tỏi phi · Bơ · Hành lá · Tiêu'
+  },
+  {
+    name: 'BIA HƠI HẠ LONG', category: 'drink',
+    badge: 'Mát lạnh · Đậm vị bản địa',
+    img: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1535958636474-b021ee887b13?w=200&q=80',
+    rating: '4.7', reviews: '980',
+    price: '20.000đ',
+    desc: 'Bia hơi ủ lạnh chuẩn vị, bọt mịn mát lạnh — bạn đồng hành hoàn hảo cho mỗi đĩa ốc nóng hổi bên bờ vịnh.',
+    ingredients: 'Bia hơi tươi · Đá lạnh'
+  },
+  {
+    name: 'NƯỚC DỪA TƯƠI', category: 'drink',
+    badge: 'Giải nhiệt tự nhiên',
+    img: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?w=200&q=80',
+    rating: '4.8', reviews: '1,120',
+    price: '35.000đ',
+    desc: 'Dừa xiêm tươi nguyên trái, nước ngọt thanh mát giải nhiệt — lựa chọn lành mạnh giữa tiết trời biển nắng ấm.',
+    ingredients: 'Dừa xiêm tươi'
+  },
+  {
+    name: 'LẨU HẢI SẢN', category: 'grill',
+    badge: 'Ấm nóng cho nhóm bạn',
+    img: 'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?w=200&q=80',
+    rating: '4.9', reviews: '2,340',
+    price: '350.000đ',
+    desc: 'Lẩu hải sản nước dùng chua cay đậm đà, đầy ắp tôm, mực, ngao và rau tươi — bữa tiệc ấm cúng quây quần cho cả nhóm.',
+    ingredients: 'Tôm · Mực · Ngao · Cà chua · Dứa · Rau nhúng · Nấm'
+  },
+  {
+    name: 'TÔM NƯỚNG MUỐI ỚT', category: 'grill',
+    badge: 'Nướng than thơm lừng',
+    img: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=200&q=80',
+    rating: '4.8', reviews: '1,760',
+    price: '160.000đ',
+    desc: 'Tôm sú tươi nướng than hoa, phủ muối ớt cay nồng. Thịt tôm chắc ngọt, dậy mùi khói — món nướng được gọi nhiều nhất mỗi tối.',
+    ingredients: 'Tôm sú · Muối ớt · Sả · Bơ tỏi'
+  },
+  {
+    name: 'ĐẶT TIỆC NHÓM', category: 'service',
+    badge: 'Phục vụ sự kiện · Sinh nhật',
+    img: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=200&q=80',
+    rating: '4.9', reviews: '640',
+    price: 'Liên hệ',
+    desc: 'Gói đặt tiệc trọn gói cho nhóm 10–50 khách: thực đơn riêng, trang trí, MC và không gian view vịnh — lo trọn cho buổi tiệc của bạn.',
+    ingredients: 'Thực đơn theo yêu cầu · Trang trí · Phục vụ riêng · Đặt cọc trước 3 ngày'
+  },
+  {
+    name: 'PHÒNG VIP BIỂN', category: 'service',
+    badge: 'Không gian riêng tư',
+    img: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&q=85',
+    thumb: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=200&q=80',
+    rating: '4.8', reviews: '410',
+    price: '500.000đ',
+    desc: 'Phòng VIP hướng vịnh Hạ Long, sức chứa 12 khách, điều hòa và phục vụ riêng — lý tưởng cho tiếp khách và họp mặt gia đình.',
+    ingredients: 'View vịnh · Điều hòa · Phục vụ riêng · Karaoke · Đặt trước'
+  }
+];
+
+// Load/save từ localStorage
+const STORE_KEY = 'ocHaLong.config';
+function loadConfig() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE_KEY) || 'null');
+    return saved && saved.dishes ? saved : null;
+  } catch (e) { return null; }
+}
+
+const saved = loadConfig();
+const DISHES = saved ? saved.dishes : structuredClone(DEFAULT_DISHES);
+const REVIEWS = saved && saved.reviews ? saved.reviews : structuredClone(DEFAULT_REVIEWS);
+const SITE = saved && saved.site
+  ? Object.assign(structuredClone(DEFAULT_SITE), saved.site)
+  : structuredClone(DEFAULT_SITE);
+let activeCat = 'oc';
+
+let current = 0;
+let isTransitioning = false;
+
+const $id = id => document.getElementById(id);
+const mainImg = $id('mainImg');
+const dishName = $id('dishName');
+const dishBadge = $id('dishBadge');
+const ratingNum = $id('ratingNum');
+const reviewCount = $id('reviewCount');
+const dishPrice = $id('dishPrice');
+const dishDesc = $id('dishDesc');
+const track = $id('carouselTrack');
+
+function buildCarousel() {
+  track.innerHTML = '';
+  // Lọc theo danh mục đang chọn, giữ index gốc trong DISHES
+  DISHES.forEach((d, i) => {
+    if (d.category !== activeCat) return;
+    const el = document.createElement('div');
+    el.className = 'car-item' + (i === current ? ' active' : '');
+    el.dataset.idx = i;
+    el.innerHTML = `<div class="car-thumb"><img src="${d.thumb}" alt="${d.name}" loading="lazy"></div><div class="car-name">${d.name.split(' ').slice(0,2).join(' ')}</div>`;
+    el.addEventListener('click', () => switchDish(i));
+    track.appendChild(el);
+  });
+}
+
+// Danh sách index thuộc danh mục đang chọn (cho nút prev/next & phím mũi tên)
+function catIndices() {
+  return DISHES.map((d, i) => i).filter(i => DISHES[i].category === activeCat);
+}
+function step(dir) {
+  const idxs = catIndices();
+  const pos = idxs.indexOf(current);
+  const next = idxs[(pos + dir + idxs.length) % idxs.length];
+  switchDish(next);
+}
+
+function switchDish(idx) {
+  if (idx === current || isTransitioning) return;
+  isTransitioning = true;
+  current = idx;
+  const d = DISHES[idx];
+
+  // Fade out
+  mainImg.style.transition = 'opacity .25s, transform .25s';
+  mainImg.style.opacity = '0';
+  mainImg.style.transform = 'scale(.92)';
+  dishName.style.transition = 'opacity .2s, transform .2s';
+  dishName.style.opacity = '0';
+  dishName.style.transform = 'translateY(-10px)';
+  dishBadge.style.transition = 'opacity .2s';
+  dishBadge.style.opacity = '0';
+  [ratingNum, dishPrice, dishDesc, reviewCount].forEach(el => {
+    el.style.transition = 'opacity .2s';
+    el.style.opacity = '0';
+  });
+
+  setTimeout(() => {
+    mainImg.src = d.img;
+    dishName.textContent = d.name;
+    dishBadge.textContent = d.badge;
+    ratingNum.textContent = d.rating;
+    reviewCount.textContent = d.reviews + ' đánh giá';
+    dishPrice.innerHTML = d.price + ' <small>/ phần</small>';
+    renderCardBody();
+
+    // Fade in
+    requestAnimationFrame(() => {
+      mainImg.style.opacity = '1';
+      mainImg.style.transform = 'scale(1)';
+      dishName.style.opacity = '1';
+      dishName.style.transform = 'translateY(0)';
+      dishBadge.style.opacity = '1';
+      [ratingNum, dishPrice, dishDesc, reviewCount].forEach(el => { el.style.opacity = '1'; });
+    });
+
+    buildCarousel();
+
+    setTimeout(() => { isTransitioning = false; }, 400);
+  }, 280);
+}
+
+// Nav arrows — duyệt trong danh mục đang chọn
+$id('prevBtn').addEventListener('click', () => step(-1));
+$id('nextBtn').addEventListener('click', () => step(1));
+
+// Card tabs — đổi nội dung Tổng quan / Nguyên liệu
+let activeTab = 'overview';
+function renderCardBody() {
+  const d = DISHES[current];
+  if (activeTab === 'ingredients') {
+    dishDesc.innerHTML = '<b style="color:var(--c-deep)">Nguyên liệu:</b> ' + (d.ingredients || 'Đang cập nhật.');
+  } else {
+    dishDesc.textContent = d.desc;
+  }
+}
+document.querySelectorAll('.c-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.c-tab').forEach(x => x.classList.remove('on'));
+    t.classList.add('on');
+    activeTab = t.dataset.tab;
+    renderCardBody();
+  });
+});
+
+// Like button
+$id('likeBtn').addEventListener('click', function() {
+  this.classList.toggle('liked');
+  this.textContent = this.classList.contains('liked') ? '♥' : '♡';
+  this.style.color = this.classList.contains('liked') ? '#fff' : '';
+});
+
+// Category menu — lọc carousel theo danh mục
+document.querySelectorAll('.cat').forEach(c => {
+  c.addEventListener('click', function() {
+    document.querySelectorAll('.cat').forEach(x => x.classList.remove('on'));
+    this.classList.add('on');
+    activeCat = this.dataset.cat;
+    buildCarousel();
+    // Nhảy tới món đầu tiên của danh mục mới
+    const first = catIndices()[0];
+    if (first !== undefined && first !== current) switchDish(first);
+  });
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') { closeAllModals(); closeDrawer(); }
+  if (e.target.matches('input, textarea')) return;
+  if (e.key === 'ArrowLeft') step(-1);
+  if (e.key === 'ArrowRight') step(1);
+});
+
+/* ════════ Áp dụng cấu hình lên trang ════════ */
+const val = id => document.getElementById(id).value.trim();
+
+function hexToRgb(hex) {
+  hex = hex.replace('#', '');
+  if (hex.length === 3) hex = hex.split('').map(c => c + c).join('');
+  const n = parseInt(hex, 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+function applyColors(c) {
+  const r = document.documentElement.style;
+  r.setProperty('--c-bg', c.bg);
+  r.setProperty('--c-deep', c.deep);
+  r.setProperty('--c-text', c.deep);
+  r.setProperty('--c-accent', c.accent);
+  const [dr, dg, db] = hexToRgb(c.deep);
+  r.setProperty('--c-deep70', `rgba(${dr},${dg},${db},.7)`);
+  r.setProperty('--c-deep10', `rgba(${dr},${dg},${db},.1)`);
+  r.setProperty('--c-deep05', `rgba(${dr},${dg},${db},.05)`);
+  const [ar, ag, ab] = hexToRgb(c.accent);
+  r.setProperty('--c-accent20', `rgba(${ar},${ag},${ab},.2)`);
+  r.setProperty('--c-accent08', `rgba(${ar},${ag},${ab},.08)`);
+}
+
+function applyConfig() {
+  applyColors(SITE.colors);
+  $id('brandName').textContent   = SITE.brandName;
+  $id('brandAccent').textContent = SITE.brandAccent;
+  $id('gRating').textContent     = SITE.google.rating;
+  $id('gCount').textContent      = SITE.google.count;
+  $id('chefName').textContent    = SITE.chef.name;
+  $id('chefSub').textContent     = SITE.chef.sub;
+  $id('chefPic').src             = SITE.chef.pic;
+  $id('aboutText').textContent   = SITE.about;
+  $id('cAddr').textContent       = SITE.contact.address;
+  $id('cPhone').textContent      = SITE.contact.phone;
+  $id('cHours').textContent      = SITE.contact.hours;
+  $id('mapLink').href            = SITE.contact.map;
+  document.title = `${SITE.brandName} ${SITE.brandAccent} — Đặc Sản Biển Cả`;
+}
+
+// Vẽ lại thẻ món hiện tại (không animation) — dùng sau khi lưu cài đặt
+function paintDish() {
+  const d = DISHES[current];
+  mainImg.src = d.img;
+  dishName.textContent = d.name;
+  dishBadge.textContent = d.badge;
+  ratingNum.textContent = d.rating;
+  reviewCount.textContent = d.reviews + ' đánh giá';
+  dishPrice.innerHTML = d.price + ' <small>/ phần</small>';
+  renderCardBody();
+}
+
+/* ════════ Toast ════════ */
+let toastTimer;
+function toast(msg) {
+  const t = $id('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3200);
+}
+
+/* ════════ Modals ════════ */
+// Chuyển mọi dạng link YouTube về URL nhúng được (tránh lỗi "refused to connect")
+function toEmbedUrl(url) {
+  if (!url) return '';
+  try {
+    const u = new URL(url, location.href);
+    let id = '';
+    if (u.hostname.includes('youtu.be')) id = u.pathname.slice(1);
+    else if (u.pathname.startsWith('/embed/')) id = u.pathname.split('/embed/')[1];
+    else if (u.pathname.startsWith('/shorts/')) id = u.pathname.split('/shorts/')[1];
+    else if (u.searchParams.get('v')) id = u.searchParams.get('v');
+    id = (id || '').split(/[/?&]/)[0];
+    if (!id) return url;
+    // youtube-nocookie cho phép nhúng rộng rãi hơn
+    return `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
+  } catch (e) { return url; }
+}
+
+function openModal(id) {
+  const m = document.getElementById(id);
+  if (!m) return;
+  if (id === 'm-video') {
+    $id('videoIframe').src = toEmbedUrl(SITE.videoUrl);
+    $id('videoFallback').href = SITE.videoUrl;
+  }
+  m.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(m) {
+  m.classList.remove('open');
+  if (m.id === 'm-video') $id('videoIframe').src = '';
+  if (!document.querySelector('.modal-overlay.open')) document.body.style.overflow = '';
+}
+function closeAllModals() {
+  document.querySelectorAll('.modal-overlay.open').forEach(closeModal);
+}
+
+document.querySelectorAll('[data-modal]').forEach(el => {
+  el.addEventListener('click', e => { e.preventDefault(); openModal(el.dataset.modal); });
+});
+document.querySelectorAll('.modal-overlay').forEach(o => {
+  o.addEventListener('click', e => { if (e.target === o) closeModal(o); });
+  o.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(o)));
+});
+document.querySelectorAll('[data-scroll="menu"]').forEach(el => {
+  el.addEventListener('click', e => {
+    e.preventDefault();
+    document.querySelector('.hero-bottom').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+});
+
+// Form đặt bàn
+$id('reserveForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const name = e.target.name.value.trim();
+  closeAllModals();
+  e.target.reset();
+  toast(`Cảm ơn ${name}! Chúng tôi sẽ gọi xác nhận trong ít phút.`);
+});
+
+/* ════════ Settings drawer ════════ */
+function buildSettings() {
+  const s = SITE, d = DISHES[current];
+  $id('settingsBody').innerHTML = `
+    <div class="set-group"><h3>Thương hiệu</h3>
+      <div class="set-field"><label>Tên (phần đậm)</label><input id="set-brandName" value="${s.brandName}"></div>
+      <div class="set-field"><label>Tên (phần nhấn màu)</label><input id="set-brandAccent" value="${s.brandAccent}"></div>
+    </div>
+    <div class="set-group"><h3>Màu sắc (xem trước ngay)</h3>
+      <div class="set-colors">
+        <label class="set-color"><span>Nền</span><input type="color" id="set-cbg" value="${s.colors.bg}"></label>
+        <label class="set-color"><span>Chủ đạo</span><input type="color" id="set-cdeep" value="${s.colors.deep}"></label>
+        <label class="set-color"><span>Nhấn</span><input type="color" id="set-caccent" value="${s.colors.accent}"></label>
+      </div>
+    </div>
+    <div class="set-group"><h3>Đánh giá Google</h3>
+      <div class="set-field"><label>Điểm</label><input id="set-grating" value="${s.google.rating}"></div>
+      <div class="set-field"><label>Số lượt</label><input id="set-gcount" value="${s.google.count}"></div>
+    </div>
+    <div class="set-group"><h3>Bếp trưởng</h3>
+      <div class="set-field"><label>Tên</label><input id="set-chefName" value="${s.chef.name}"></div>
+      <div class="set-field"><label>Mô tả</label><input id="set-chefSub" value="${s.chef.sub}"></div>
+      <div class="set-field"><label>Ảnh (URL)</label><input id="set-chefPic" value="${s.chef.pic}"></div>
+    </div>
+    <div class="set-group"><h3>Giới thiệu (Về chúng tôi)</h3>
+      <div class="set-field"><textarea id="set-about" rows="4">${s.about}</textarea></div>
+    </div>
+    <div class="set-group"><h3>Liên hệ & Vị trí</h3>
+      <div class="set-field"><label>Địa chỉ</label><input id="set-addr" value="${s.contact.address}"></div>
+      <div class="set-field"><label>Hotline</label><input id="set-phone" value="${s.contact.phone}"></div>
+      <div class="set-field"><label>Giờ mở cửa</label><input id="set-hours" value="${s.contact.hours}"></div>
+      <div class="set-field"><label>Link Google Maps</label><input id="set-map" value="${s.contact.map}"></div>
+    </div>
+    <div class="set-group"><h3>Video giới thiệu</h3>
+      <div class="set-field"><label>Dán link YouTube bất kỳ (watch / youtu.be / shorts)</label><input id="set-video" value="${s.videoUrl}"></div>
+    </div>
+    <div class="set-group"><h3>Bảo mật</h3>
+      <div class="set-field"><label>Mã PIN quản trị</label><input id="set-pin" value="${s.adminPin}"></div>
+    </div>
+    <div class="set-group"><h3>Món đang hiển thị</h3>
+      <div class="dish-edit">
+        <div class="dish-edit-head">${d.name}</div>
+        <div class="img-edit">
+          <img id="set-dimg-prev" src="${d.img}" alt="Xem trước ảnh">
+          <div class="img-edit-ctrl">
+            <button type="button" class="btn-ghost" id="set-dupload">Tải ảnh lên</button>
+            <input type="file" id="set-dfile" accept="image/*" hidden>
+          </div>
+        </div>
+        <div class="set-field"><label>Link ảnh món</label><input id="set-dimg" value="${d.img}"></div>
+        <div class="set-field"><label>Tên món</label><input id="set-dname" value="${d.name}"></div>
+        <div class="set-field"><label>Giá</label><input id="set-dprice" value="${d.price}"></div>
+        <div class="set-field"><label>Mô tả</label><textarea id="set-ddesc" rows="3">${d.desc}</textarea></div>
+      </div>
+    </div>`;
+  // Xem trước màu ngay khi kéo
+  ['set-cbg', 'set-cdeep', 'set-caccent'].forEach(id => {
+    $id(id).addEventListener('input', () => {
+      applyColors({ bg: val('set-cbg'), deep: val('set-cdeep'), accent: val('set-caccent') });
+    });
+  });
+
+  // Ảnh món: xem trước khi đổi link
+  $id('set-dimg').addEventListener('input', () => { $id('set-dimg-prev').src = $id('set-dimg').value; });
+  // Upload ảnh từ máy → data URL
+  $id('set-dupload').addEventListener('click', () => $id('set-dfile').click());
+  $id('set-dfile').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { toast('Ảnh quá lớn, hãy chọn ảnh dưới 2MB.'); return; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      $id('set-dimg').value = reader.result;
+      $id('set-dimg-prev').src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function saveSettings() {
+  SITE.brandName   = val('set-brandName');
+  SITE.brandAccent = val('set-brandAccent');
+  SITE.colors      = { bg: val('set-cbg'), deep: val('set-cdeep'), accent: val('set-caccent') };
+  SITE.google      = { rating: val('set-grating'), count: val('set-gcount') };
+  SITE.chef        = { name: val('set-chefName'), sub: val('set-chefSub'), pic: val('set-chefPic') };
+  SITE.about       = val('set-about');
+  SITE.contact     = { address: val('set-addr'), phone: val('set-phone'), hours: val('set-hours'), map: val('set-map') };
+  SITE.videoUrl    = val('set-video');
+  SITE.adminPin    = val('set-pin') || '1234';
+  const d = DISHES[current];
+  d.name = val('set-dname'); d.price = val('set-dprice'); d.desc = val('set-ddesc');
+  const img = val('set-dimg');
+  if (img) { d.img = img; d.thumb = img; }
+  localStorage.setItem(STORE_KEY, JSON.stringify({ site: SITE, dishes: DISHES, reviews: REVIEWS }));
+  applyConfig();
+  paintDish();
+  buildCarousel();
+  closeDrawer();
+  toast('Đã lưu thay đổi!');
+}
+
+function openDrawer() {
+  buildSettings();
+  $id('settingsDrawer').classList.add('open');
+  $id('settingsOverlay').classList.add('open');
+}
+function closeDrawer() {
+  $id('settingsDrawer').classList.remove('open');
+  $id('settingsOverlay').classList.remove('open');
+}
+
+// ── Bảo vệ nút Cài đặt: ẩn mặc định, chủ quán mới hiện & mở được ──
+const fab = $id('settingsFab');
+function revealFab(show) {
+  fab.classList.toggle('revealed', show);
+  if (show && !sessionStorage.getItem('ocAdminHint')) {
+    sessionStorage.setItem('ocAdminHint', '1');
+    toast('Chế độ quản trị: bấm bánh răng và nhập mã PIN.');
+  }
+}
+// Hiện nếu URL có #admin hoặc đã mở khóa trong phiên này
+if (location.hash === '#admin' || sessionStorage.getItem('ocAdmin') === '1') revealFab(true);
+window.addEventListener('hashchange', () => { if (location.hash === '#admin') revealFab(true); });
+// Phím tắt bí mật bật/tắt nút: Ctrl/Cmd + Shift + S
+document.addEventListener('keydown', e => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'S' || e.key === 's')) {
+    e.preventDefault();
+    revealFab(!fab.classList.contains('revealed'));
+  }
+});
+// Mở khóa bằng PIN trước khi cho chỉnh sửa
+function ensureUnlocked() {
+  if (sessionStorage.getItem('ocAdmin') === '1') return true;
+  const pin = prompt('Nhập mã quản trị để chỉnh sửa trang:');
+  if (pin === null) return false;
+  if (pin === SITE.adminPin) { sessionStorage.setItem('ocAdmin', '1'); return true; }
+  toast('Mã không đúng.');
+  return false;
+}
+
+fab.addEventListener('click', () => { if (ensureUnlocked()) openDrawer(); });
+$id('closeSettings').addEventListener('click', closeDrawer);
+$id('settingsOverlay').addEventListener('click', closeDrawer);
+$id('saveSettings').addEventListener('click', saveSettings);
+$id('resetSettings').addEventListener('click', () => {
+  if (confirm('Khôi phục toàn bộ về mặc định? Mọi thay đổi đã lưu sẽ bị xóa.')) {
+    localStorage.removeItem(STORE_KEY);
+    location.reload();
+  }
+});
+
+/* ════════ Hiệu ứng 3D — nghiêng theo con trỏ ════════ */
+function add3DTilt(el, max, scale) {
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    el.style.transform =
+      `perspective(900px) rotateY(${px * max}deg) rotateX(${-py * max}deg)` +
+      (scale ? ` scale(${scale})` : '');
+  });
+  el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+}
+add3DTilt($id('mainPlate'), 14, 1.05);
+add3DTilt(document.querySelector('.info-card'), 6, 1);
+
+/* ════════ Khởi tạo ════════ */
+applyConfig();
+buildCarousel();
+buildReviews();
+paintDish();
+</script>
+</body>
+</html>
